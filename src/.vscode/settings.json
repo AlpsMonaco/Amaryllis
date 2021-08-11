@@ -1,0 +1,13 @@
+{
+	"files.associations": {
+		"thread": "cpp",
+		"iostream": "cpp",
+		"exception": "cpp",
+		"xmemory": "cpp",
+		"algorithm": "cpp",
+		"charconv": "cpp",
+		"iomanip": "cpp",
+		"xlocmon": "cpp",
+		"xlocnum": "cpp"
+	}
+}
