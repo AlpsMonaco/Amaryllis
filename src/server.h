@@ -1,20 +1,14 @@
 #pragma once
-#include <exception>
-#include "util.h"
-
-#ifdef _WIN32
-#define _WIN_ENVIROMENT 1
-#include <WinSock2.h>
-#pragma comment(lib, "ws2_32.lib")
-#endif
+#include "client.h"
 
 namespace Amaryllis
 {
-	typedef int ERR_CODE;
+	static const char *LOCAL_ADDR = "127.0.0.1";
+	static const char *ANY_ADDR = "127.0.0.1";
 
 	enum SERVER_ERR_CODE
 	{
-		SUC = ERR_CODE(0),
+		SERVER_SUC = ERR_CODE(0),
 		ERR_INVALID_SERVER_SOCKET,
 		ERR_BIND_FAILED,
 		ERR_LISTEN_FAILED,
@@ -27,13 +21,15 @@ namespace Amaryllis
 	class server_base
 	{
 	public:
+		server_base(int port);
 		server_base(const char *addr, int port);
-		ERR_CODE start();
+		ERR_CODE serve();
 
 	protected:
 		int port;
 		char addr[16];
 		virtual ERR_CODE bind_and_listen() = 0;
+		virtual client_base *accept() = 0;
 	};
 
 	/* ------------------------------------------------------------ */
@@ -41,6 +37,7 @@ namespace Amaryllis
 	class server_win : public server_base
 	{
 	public:
+		server_win(int port);
 		server_win(const char *addr, int port);
 		void test()
 		{
@@ -53,8 +50,15 @@ namespace Amaryllis
 		SOCKET server_socket;
 		sockaddr_in server_addr;
 		ERR_CODE bind_and_listen();
+		// client *accept();
 	};
 
 	/* ------------------------------------------------------------ */
+
+#ifdef _WIN_ENVIROMENT
+	using server = server_win;
+#else
+	using server = server_linux;
+#endif
 
 }

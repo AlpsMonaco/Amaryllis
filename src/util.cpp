@@ -9,16 +9,6 @@ void exit_with_msg(int exit_code, const char *msg)
 	exit(exit_code);
 }
 
-//void sleep_ms(int ms)
-//{
-//#ifdef _WIN_ENVIROMENT
-//	Sleep(ms);
-//
-//#else
-//	usleep(1000 * ms);
-//#endif
-//}
-
 namespace strlib
 {
 	void strcpy(char *dst, const char *src)
@@ -107,4 +97,41 @@ namespace strlib
 
 		return len;
 	}
+}
+
+bool netutil::is_domain_name(const char *s)
+{
+	int count = 0;
+	while (s[count] != '\0')
+	{
+		if (s[count] > 57)
+		{
+			return true;
+		}
+		count++;
+	}
+
+	return false;
+}
+
+bool netutil::get_host_by_name(char *ip, const char *name)
+{
+	WSADATA wsadata;
+	if (WSAStartup(MAKEWORD(2, 2), &wsadata) != 0)
+	{
+		return false;
+	}
+
+	struct hostent *remoteHost;
+	remoteHost = gethostbyname(name);
+	if (remoteHost != nullptr)
+	{
+		if (!remoteHost->h_addr_list[0])
+			return false;
+
+		strlib::strcpy(ip, inet_ntoa(*(struct in_addr *)remoteHost->h_addr_list[0]));
+		return true;
+	}
+
+	return false;
 }
