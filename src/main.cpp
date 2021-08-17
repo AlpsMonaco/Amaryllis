@@ -1,4 +1,3 @@
-#include "server.h"
 #include <WinSock2.h>
 #include <thread>
 #include "util.h"
@@ -131,4 +130,61 @@ std::string s()
 	std::string s = "hello";
 	println(&s);
 	return s;
+}
+
+#include "cs_win.h"
+int main(int argc, char **argv)
+{
+	const int port = 44543;
+	Amaryllis::server_win *s = new Amaryllis::server_win(Amaryllis::ANY_ADDR, port);
+	if (s->serve() != Amaryllis::SERVER_SUC)
+	{
+		return 1;
+	}
+
+	std::thread([](Amaryllis::server_win *s) -> void
+				{
+					auto c = s->accept();
+					char buf[255];
+
+					for (;;)
+					{
+						int size = c->receive(buf, 255);
+						if (size > 0)
+						{
+							buf[size] = '\0';
+							print("client says:");
+							println(buf);
+							buf[0] = 'o';
+							buf[1] = 'k';
+							buf[2] = '\0';
+							c->send(buf, 3);
+						}
+					}
+				},
+				s)
+		.detach();
+
+	std::this_thread::sleep_for(std::chrono::seconds(3));
+
+	auto c = new Amaryllis::client_win("localhost", port);
+	if (c->connect() != Amaryllis::CLIENT_SUC)
+	{
+		return 1;
+	}
+
+	for (;;)
+	{
+		char buf[255];
+		std::cin >> buf;
+		int size = strlib::strlen(buf);
+		if (size > 0)
+		{
+			c->send(buf, size);
+		}
+
+		c->receive(buf, 255);
+		print("client receive:");
+		println(buf);
+	}
 }
