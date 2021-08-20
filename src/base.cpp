@@ -30,7 +30,7 @@ int client_base::remote_addr_size()
 
 void client_base::remote_addr(char *addr)
 {
-	sprintf(addr,"%s:%d", this->remote_ip, this->remote_port);
+	sprintf(addr, "%s:%d", this->remote_ip, this->remote_port);
 }
 
 Amaryllis::server_base::server_base(int port)

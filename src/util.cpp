@@ -1,4 +1,3 @@
-#include <fstream>
 #include "util.h"
 #include <stdio.h>
 #include "stdlib.h"
@@ -134,4 +133,17 @@ bool netutil::get_host_by_name(char *ip, const char *name)
 	}
 
 	return false;
+}
+
+WSADATA* netutil::wsa_ptr = nullptr;
+
+void netutil::wsa()
+{
+	if (wsa_ptr == nullptr) {
+		wsa_ptr = new WSADATA();
+		if (WSAStartup(MAKEWORD(2, 2), wsa_ptr) != 0)
+		{
+			wsa_ptr = nullptr;
+		};
+	}
 }

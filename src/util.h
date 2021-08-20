@@ -34,4 +34,7 @@ namespace netutil
 {
 	bool is_domain_name(const char *s);
 	bool get_host_by_name(char *dst, const char *name);
+
+	extern WSADATA* wsa_ptr;
+	void wsa();
 }

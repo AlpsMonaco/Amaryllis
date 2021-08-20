@@ -27,7 +27,6 @@ namespace Amaryllis
 		client_win *accept();
 
 	protected:
-		static WSADATA *wsaData;
 		SOCKET server_socket;
 		sockaddr_in server_addr;
 		ERR_CODE bind_and_listen();

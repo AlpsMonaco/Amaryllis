@@ -50,24 +50,16 @@ int client_win::receive(char *buf, int buf_size)
 	return ::recv(this->client_socket, buf, buf_size, 0);
 }
 
-client_win::client_win(const char *ip, int port) : client_base(ip, port){};
-
-WSADATA *Amaryllis::server_win::wsaData = nullptr;
+client_win::client_win(const char *ip, int port) : client_base(ip, port){
+	netutil::wsa();
+};
 
 Amaryllis::server_win::server_win(int port) : server_base(port){};
 Amaryllis::server_win::server_win(const char *addr, int port) : server_base(addr, port){};
 
 Amaryllis::ERR_CODE Amaryllis::server_win::bind_and_listen()
 {
-	if (wsaData == nullptr)
-	{
-		wsaData = new WSADATA();
-		if (WSAStartup(MAKEWORD(2, 2), wsaData) != 0)
-		{
-			wsaData = nullptr;
-			return ERR_WSA_STARTUP_FAILED;
-		};
-	}
+	netutil::wsa();
 
 	server_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (server_socket == INVALID_SOCKET)
