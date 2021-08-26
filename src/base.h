@@ -9,7 +9,8 @@ namespace Amaryllis
 
 	enum CLIENT_ERR_CODE
 	{
-		CLIENT_SUC = ERR_CODE(0),
+		CLIENT_FAIL = ERR_CODE(-1),
+		CLIENT_SUC,
 		ERR_INVALID_CLIENT_SOCKET,
 		ERR_DNS_LOOKUP_FAILED,
 		ERR_CLIENT_CONNECT_FAILED,
@@ -24,7 +25,7 @@ namespace Amaryllis
 
 		virtual ERR_CODE connect() = 0;
 		virtual int receive(char *buf, int buf_size) = 0;
-		virtual int send(char *data, int data_size) = 0;
+		virtual int send(const char *data, int data_size) = 0;
 
 	protected:
 		char remote_ip[16];

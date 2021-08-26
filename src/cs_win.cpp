@@ -40,7 +40,7 @@ ERR_CODE client_win::connect()
 	return CLIENT_SUC;
 }
 
-int client_win::send(char *data, int data_size)
+int client_win::send(const char *data, int data_size)
 {
 	return ::send(this->client_socket, data, data_size, 0);
 }
@@ -50,7 +50,8 @@ int client_win::receive(char *buf, int buf_size)
 	return ::recv(this->client_socket, buf, buf_size, 0);
 }
 
-client_win::client_win(const char *ip, int port) : client_base(ip, port){
+client_win::client_win(const char *ip, int port) : client_base(ip, port)
+{
 	netutil::wsa();
 };
 

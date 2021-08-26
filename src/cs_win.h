@@ -9,7 +9,7 @@ namespace Amaryllis
 		client_win(const char *ip, int port);
 		ERR_CODE connect();
 		int receive(char *buf, int buf_size);
-		int send(char *data, int data_size);
+		int send(const char *data, int data_size);
 
 		static void get_ip(char *dst, sockaddr_in *sin);
 		static int get_port(sockaddr_in *sin);
