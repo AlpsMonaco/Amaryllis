@@ -4,6 +4,7 @@
 namespace Amaryllis
 {
 	typedef int ERR_CODE;
+
 	static const char *LOCAL_ADDR = "127.0.0.1";
 	static const char *ANY_ADDR = "0.0.0.0";
 

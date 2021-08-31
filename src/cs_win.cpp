@@ -53,10 +53,18 @@ int client_win::receive(char *buf, int buf_size)
 client_win::client_win(const char *ip, int port) : client_base(ip, port)
 {
 	netutil::wsa();
+	this->client_addr = {0};
+	this->client_socket = NULL;
 };
 
-Amaryllis::server_win::server_win(int port) : server_base(port){};
-Amaryllis::server_win::server_win(const char *addr, int port) : server_base(addr, port){};
+Amaryllis::server_win::server_win(int port) : server_base(port){
+	this->server_socket = NULL;
+	this->server_addr = { 0 };
+};
+Amaryllis::server_win::server_win(const char *addr, int port) : server_base(addr, port){
+	this->server_socket = NULL;
+	this->server_addr = { 0 };
+};
 
 Amaryllis::ERR_CODE Amaryllis::server_win::bind_and_listen()
 {

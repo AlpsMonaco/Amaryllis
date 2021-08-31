@@ -1,22 +1,55 @@
+#include "server.h"
 #include "client.h"
 #include <thread>
 
-int main(int argc, char **argv)
+const int port = 65544;
+
+Amaryllis::server *as_server()
 {
-	Amaryllis::client *c = new Amaryllis::client(Amaryllis::LOCAL_ADDR, 33123);
-	if (c->connect() != Amaryllis::CLIENT_SUC)
+	Amaryllis::server *s = new Amaryllis::server(Amaryllis::LOCAL_ADDR, port);
+	if (s->serve() != Amaryllis::SERVER_SUC)
 	{
-		return 1;
+		return nullptr;
 	}
 
-	char buf[] = "hello world";
+	return s;
+};
 
-	for (;;)
+Amaryllis::client *as_client()
+{
+	Amaryllis::client *c = new Amaryllis::client(Amaryllis::LOCAL_ADDR, port);
+	if (c->connect() != Amaryllis::CLIENT_SUC)
 	{
-		int size = c->send(buf, 12);
-		print("size is ");
-		println(size);
+		return nullptr;
+	}
 
-		std::this_thread::sleep_for(std::chrono::seconds(3));
+	return c;
+};
+
+int main(int argc, char **argv)
+{
+	char c = 's';
+
+	if (argc > 0)
+	{
+		if (strlen(argv[1]) > 0)
+		{
+			c = argv[1][0];
+		}
+	}
+
+	switch (c)
+	{
+	case 's':
+		println("s");
+		break;
+
+	case 'c':
+		println("c");
+		break;
+
+	default:
+		println("default");
+		break;
 	}
 }
